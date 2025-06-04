@@ -1,0 +1,37 @@
+server:
+  port: 3010
+  host: '0.0.0.0'
+  
+browser:
+  poolSize: 3
+  options:
+    headless: "new"
+    args:
+      - '--no-sandbox'
+      - '--disable-setuid-sandbox'
+      - '--disable-dev-shm-usage'
+      - '--disable-gpu'
+      - '--memory-pressure-off'
+      - '--max_old_space_size=4096'
+  
+cache:
+  pages:
+    ttl: 259200    # 3 дня = 3*24*60*60 = 259200 сек
+    maxKeys: 5000
+    checkperiod: 12000  # проверка каждые 2 минуты
+  resources:
+    maxSize: 10000  # максимум ресурсов в кэше
+    
+performance:
+  maxConcurrentRenders: 10
+  renderTimeout: 30000  # 30 секунд
+  pageWaitTime: 3000   # 3 секунды ожидания после загрузки
+  
+logging:
+  level: 'info'
+  maxFiles: 5
+  maxsize: 10485760  # 10MB
+  
+security:
+  allowedDomains: []  # пустой массив = все домены разрешены
+  maxUrlLength: 2048 

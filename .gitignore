@@ -1,0 +1,49 @@
+# Node.js
+node_modules/
+
+# Build
+/dist/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Cache
+.cache/
+.cache-loader/
+.cache/
+cache/
+
+# Env
+.env
+
+
+# IDE
+.idea/
+.vscode/
+*.sublime*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# PM2
+pids/
+*.pid
+
+# Misc
+*.tgz
+*.rar
+*.zip
+
+# Coverage
+coverage/
+
+# Output
+*.out
+
+# Local config
+config.local.yaml 

@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prerender Service - Панель управления</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-server"></i> Prerender Service</h1>
+            <div class="status-indicator" id="statusIndicator">
+                <i class="fas fa-circle"></i>
+                <span id="statusText">Загрузка...</span>
+            </div>
+        </header>
+
+        <nav class="tabs">
+            <button class="tab-button active" data-tab="dashboard">
+                <i class="fas fa-dashboard"></i> Панель управления
+            </button>
+            <button class="tab-button" data-tab="logs">
+                <i class="fas fa-file-alt"></i> Логи
+            </button>
+            <button class="tab-button" data-tab="cache">
+                <i class="fas fa-database"></i> Кэш
+            </button>
+            <button class="tab-button" data-tab="tools">
+                <i class="fas fa-tools"></i> Инструменты
+            </button>
+        </nav>
+
+        <!-- Dashboard Tab -->
+        <div class="tab-content active" id="dashboard">
+            <div class="grid">
+                <div class="card">
+                    <h3><i class="fas fa-chart-line"></i> Статистика рендера</h3>
+                    <div class="stats-grid">
+                        <div class="stat">
+                            <span class="stat-value" id="totalRequests">0</span>
+                            <span class="stat-label">Всего запросов</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-value" id="successfulRenders">0</span>
+                            <span class="stat-label">Успешных</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-value" id="errors">0</span>
+                            <span class="stat-label">Ошибок</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-value" id="cacheHits">0</span>
+                            <span class="stat-label">Попаданий в кэш</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-value" id="activeRenders">0</span>
+                            <span class="stat-label">Активных рендеров</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-value" id="queuedRenders">0</span>
+                            <span class="stat-label">В очереди</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3><i class="fas fa-browser"></i> Браузеры</h3>
+                    <div class="browser-stats">
+                        <div class="browser-stat">
+                            <span class="label">Всего:</span>
+                            <span id="totalBrowsers">0</span>
+                        </div>
+                        <div class="browser-stat">
+                            <span class="label">Свободных:</span>
+                            <span id="freeBrowsers">0</span>
+                        </div>
+                        <div class="browser-stat">
+                            <span class="label">Занятых:</span>
+                            <span id="busyBrowsers">0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3><i class="fas fa-memory"></i> Система</h3>
+                    <div class="system-stats">
+                        <div class="system-stat">
+                            <span class="label">Память:</span>
+                            <span id="memoryUsage">0 MB</span>
+                        </div>
+                        <div class="system-stat">
+                            <span class="label">Uptime:</span>
+                            <span id="uptime">0s</span>
+                        </div>
+                        <div class="system-stat">
+                            <span class="label">Node.js:</span>
+                            <span id="nodeVersion">-</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3><i class="fas fa-database"></i> Кэш</h3>
+                    <div class="cache-stats">
+                        <div class="cache-stat">
+                            <span class="label">Страниц:</span>
+                            <span id="pagesInCache">0</span>
+                        </div>
+                        <div class="cache-stat">
+                            <span class="label">Ресурсов:</span>
+                            <span id="resourcesInCache">0</span>
+                        </div>
+                        <div class="cache-stat">
+                            <span class="label">Попаданий:</span>
+                            <span id="cacheHitRate">0%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Logs Tab -->
+        <div class="tab-content" id="logs">
+            <div class="logs-controls">
+                <div class="control-group">
+                    <label for="logLimit">Количество:</label>
+                    <select id="logLimit">
+                        <option value="50">50</option>
+                        <option value="100" selected>100</option>
+                        <option value="200">200</option>
+                        <option value="500">500</option>
+                    </select>
+                </div>
+                <button id="refreshLogs" class="btn btn-primary">
+                    <i class="fas fa-refresh"></i> Обновить
+                </button>
+                <button id="autoRefresh" class="btn btn-secondary">
+                    <i class="fas fa-play"></i> Авто-обновление
+                </button>
+            </div>
+            <div class="logs-container">
+                <div id="logsContent" class="logs-content">
+                    Загрузка логов...
+                </div>
+            </div>
+        </div>
+
+        <!-- Cache Tab -->
+        <div class="tab-content" id="cache">
+            <div class="cache-controls">
+                <button id="clearAllCache" class="btn btn-danger">
+                    <i class="fas fa-trash"></i> Очистить весь кэш
+                </button>
+                <button id="clearPagesCache" class="btn btn-warning">
+                    <i class="fas fa-file"></i> Очистить кэш страниц
+                </button>
+                <button id="clearResourcesCache" class="btn btn-warning">
+                    <i class="fas fa-image"></i> Очистить кэш ресурсов
+                </button>
+            </div>
+            <div class="cache-details">
+                <div class="card">
+                    <h3>Детали кэша</h3>
+                    <div id="cacheDetails">Загрузка...</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tools Tab -->
+        <div class="tab-content" id="tools">
+            <div class="tools-grid">
+                <div class="card">
+                    <h3><i class="fas fa-globe"></i> Тест пререндера</h3>
+                    <div class="test-form">
+                        <input type="url" id="testUrl" placeholder="https://example.com" class="form-input">
+                        <button id="testRender" class="btn btn-primary">
+                            <i class="fas fa-play"></i> Протестировать
+                        </button>
+                    </div>
+                    <div id="testResult" class="test-result"></div>
+                </div>
+
+                <div class="card">
+                    <h3><i class="fas fa-fire"></i> Прогрев кэша</h3>
+                    <div class="warmup-form">
+                        <textarea id="warmupUrls" placeholder="https://example.com/page1&#10;https://example.com/page2" class="form-textarea"></textarea>
+                        <button id="startWarmup" class="btn btn-primary">
+                            <i class="fas fa-rocket"></i> Запустить прогрев
+                        </button>
+                    </div>
+                    <div id="warmupResult" class="warmup-result"></div>
+                </div>
+
+                <div class="card">
+                    <h3><i class="fas fa-restart"></i> Управление</h3>
+                    <div class="management-controls">
+                        <button id="resetStats" class="btn btn-secondary">
+                            <i class="fas fa-chart-line"></i> Сбросить статистику
+                        </button>
+                        <button id="restartBrowsers" class="btn btn-warning">
+                            <i class="fas fa-browser"></i> Перезапустить браузеры
+                        </button>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3><i class="fas fa-sitemap"></i> Прогрев по sitemap.xml</h3>
+                    <div class="sitemap-form">
+                        <input type="url" id="sitemapUrl" placeholder="https://site.by/sitemap.xml" class="form-input">
+                        <button id="startSitemapWarmup" class="btn btn-primary">
+                            <i class="fas fa-rocket"></i> Запустить прогрев
+                        </button>
+                    </div>
+                    <div id="sitemapWarmupStatus" class="sitemap-status"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/app.js"></script>
+</body>
+</html> 
