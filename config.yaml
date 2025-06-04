@@ -3,7 +3,7 @@ server:
   host: '0.0.0.0'
   
 browser:
-  poolSize: 3
+  poolSize: 2
   options:
     headless: "new"
     args:
@@ -23,8 +23,8 @@ cache:
     maxSize: 10000  # максимум ресурсов в кэше
     
 performance:
-  maxConcurrentRenders: 10
-  renderTimeout: 30000  # 30 секунд
+  maxConcurrentRenders: 2
+  renderTimeout: 60000  # 30 секунд
   pageWaitTime: 3000   # 3 секунды ожидания после загрузки
   
 logging:

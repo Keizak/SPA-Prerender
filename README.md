@@ -210,14 +210,6 @@ location /prerender/ {
 
 ---
 
-## TODO / Roadmap
-- [ ] Поддержка очередей для больших sitemap
-- [ ] Расширенная фильтрация логов
-- [ ] Авторизация для админки
-- [ ] WebSocket-уведомления о статусе прогрева
-
----
-
 ## Интеграция с Telegram
 
 Для уведомлений о прогреве и нагрузке добавьте переменные в .env:
@@ -271,4 +263,4 @@ GitHub: [https://github.com/Keizak/SPA-Prerender](https://github.com/Keizak/SPA-
 
 ---
 
-**Автор:** Ivan Keizak, 2024
+**Автор:** Ivan Keizak, 2025
