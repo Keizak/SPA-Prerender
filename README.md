@@ -59,6 +59,12 @@ cache:
     checkperiod: 900 # Как часто чистить просроченные ключи (сек)
   resources:
     maxSize: 10000   # Кэш ресурсов (изображения, стили)
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    # password: ''
+    # db: 0
+    keyPrefix: 'prerender:'
 
 performance:
   maxConcurrentRenders: 2   # Одновременных рендеров (1-2 для 1 ядра CPU)
@@ -319,3 +325,41 @@ GitHub: [https://github.com/Keizak/SPA-Prerender](https://github.com/Keizak/SPA-
 ---
 
 **Автор:** Ivan Keizak, 2025
+
+## Кэширование (Redis)
+
+Сервис использует Redis для хранения кэша страниц и ресурсов. Это позволяет сохранять кэш между перезапусками и масштабировать сервис.
+
+### Пример секции cache в config.yaml:
+
+```yaml
+cache:
+  pages:
+    ttl: 259200      # Время жизни кэша страниц (сек)
+    maxKeys: 10000   # Максимум страниц (используется для мониторинга)
+    checkperiod: 900 # Не используется с Redis, но можно оставить для совместимости
+  resources:
+    maxSize: 10000   # Максимум ресурсов (используется для мониторинга)
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    # password: ''
+    # db: 0
+    keyPrefix: 'prerender:'
+```
+
+- Для работы необходим запущенный Redis (локально или в облаке).
+- Все операции с кэшем теперь асинхронные (await).
+- Старый in-memory кэш больше не используется.
+
+### Запуск Redis (локально):
+
+- **Linux/macOS:**
+  ```bash
+  sudo apt install redis-server
+  redis-server
+  ```
+- **Windows:** используйте официальный docker-образ:
+  ```bash
+  docker run --name redis -p 6379:6379 -d redis
+  ```

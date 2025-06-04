@@ -106,7 +106,7 @@ export class PrerenderController {
   @ApiQuery({ name: 'url', description: 'URL для проверки', example: 'https://bonix.by' })
   @ApiResponse({ status: 200, description: 'Статус URL и информация о кэше' })
   async getUrlStatus(@Query('url') url: string) {
-    const cacheInfo = this.cacheService.getPageCacheInfo(url);
+    const cacheInfo = await this.cacheService.getPageCacheInfo(url);
     return {
       url,
       ...cacheInfo,

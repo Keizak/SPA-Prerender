@@ -56,7 +56,7 @@ export class PrerenderService {
 
       // Проверка кэша
       const cacheKey = this.getCacheKey(url, options);
-      const cached = this.cacheService.getPage(cacheKey);
+      const cached = await this.cacheService.getPage(cacheKey);
 
       if (cached) {
         this.stats.cacheHits++;
@@ -156,7 +156,7 @@ export class PrerenderService {
 
       // Сохранение в кэш
       const cacheKey = this.getCacheKey(url, options);
-      this.cacheService.setPage(cacheKey, html);
+      await this.cacheService.setPage(cacheKey, html);
 
       const duration = Date.now() - startTime;
       this.stats.successfulRenders++;
@@ -312,9 +312,9 @@ export class PrerenderService {
     }
   }
 
-  getStats(): PrerenderStats {
+  async getStats(): Promise<PrerenderStats> {
     const browserStats = this.browserPoolService.getStats();
-    const cacheStats = this.cacheService.getStats();
+    const cacheStats = await this.cacheService.getStats();
 
     return {
       render: {

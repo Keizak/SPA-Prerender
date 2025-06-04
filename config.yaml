@@ -21,7 +21,13 @@ cache:
     checkperiod: 12000  # проверка каждые 2 минуты
   resources:
     maxSize: 10000  # максимум ресурсов в кэше
-    
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    # password: ''
+    # db: 0
+    keyPrefix: 'prerender:'
+  
 performance:
   maxConcurrentRenders: 2
   renderTimeout: 60000  # 30 секунд

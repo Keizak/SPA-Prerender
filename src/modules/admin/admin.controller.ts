@@ -31,7 +31,7 @@ export class AdminController {
   @ApiOperation({ summary: 'Получение статистики системы' })
   @ApiResponse({ status: 200, description: 'Статистика системы' })
   async getStats() {
-    const stats = this.prerenderService.getStats();
+    const stats = await this.prerenderService.getStats();
     const memoryUsage = process.memoryUsage();
     const uptime = process.uptime();
 
@@ -60,14 +60,14 @@ export class AdminController {
   async clearCache(@Body(ValidationPipe) body: ClearCacheDto) {
     switch (body.type) {
       case 'pages':
-        this.cacheService.clearPageCache();
+        await this.cacheService.clearPageCache();
         break;
       case 'resources':
-        this.cacheService.clearResourceCache();
+        await this.cacheService.clearResourceCache();
         break;
       case 'all':
       default:
-        this.cacheService.clearAll();
+        await this.cacheService.clearAll();
     }
 
     this.logger.log(`Кэш очищен: ${body.type}`);
@@ -148,7 +148,7 @@ export class AdminController {
   async getHealth(): Promise<HealthCheck> {
     try {
       const browserStats = this.browserPoolService.getStats();
-      const cacheStats = this.cacheService.getStats();
+      const cacheStats = await this.cacheService.getStats();
       const memoryUsage = process.memoryUsage();
 
       const checks = {
