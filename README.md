@@ -252,7 +252,7 @@ DASHBOARD_PASS=yourpassword
 
 ## License
 
-MIT License © 2024 Ivan Keizak ([github.com/Keizak](https://github.com/Keizak))
+MIT License © 2025 Ivan Keizak ([github.com/Keizak](https://github.com/Keizak))
 
 ---
 
