@@ -311,21 +311,6 @@ DASHBOARD_PASS=yourpassword
 
 ---
 
-## License
-
-MIT License © 2025 Ivan Keizak ([github.com/Keizak](https://github.com/Keizak))
-
----
-
-## Контакты
-
-Telegram: [t.me/keizak](https://t.me/keizak)
-GitHub: [https://github.com/Keizak/SPA-Prerender](https://github.com/Keizak/SPA-Prerender)
-
----
-
-**Автор:** Ivan Keizak, 2025
-
 ## Кэширование (Redis)
 
 Сервис использует Redis для хранения кэша страниц и ресурсов. Это позволяет сохранять кэш между перезапусками и масштабировать сервис.
@@ -363,3 +348,19 @@ cache:
   ```bash
   docker run --name redis -p 6379:6379 -d redis
   ```
+
+## License
+
+MIT License © 2025 Ivan Keizak ([github.com/Keizak](https://github.com/Keizak))
+
+---
+
+## Контакты
+
+Telegram: [t.me/keizak](https://t.me/keizak)
+GitHub: [https://github.com/Keizak/SPA-Prerender](https://github.com/Keizak/SPA-Prerender)
+
+---
+
+**Автор:** Ivan Keizak, 2025
+

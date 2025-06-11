@@ -17,10 +17,10 @@ browser:
 cache:
   pages:
     ttl: 259200    # 3 дня = 3*24*60*60 = 259200 сек
-    maxKeys: 5000
+    maxKeys: 50000
     checkperiod: 12000  # проверка каждые 2 минуты
   resources:
-    maxSize: 10000  # максимум ресурсов в кэше
+    maxSize: 100000  # максимум ресурсов в кэше
   redis:
     host: 127.0.0.1
     port: 6379
@@ -31,7 +31,7 @@ cache:
 performance:
   maxConcurrentRenders: 2
   renderTimeout: 60000  # 30 секунд
-  pageWaitTime: 3000   # 3 секунды ожидания после загрузки
+  pageWaitTime: 10000   # 3 секунды ожидания после загрузки
   
 logging:
   level: 'info'
@@ -40,4 +40,4 @@ logging:
   
 security:
   allowedDomains: []  # пустой массив = все домены разрешены
-  maxUrlLength: 2048 
+  maxUrlLength: 4048
