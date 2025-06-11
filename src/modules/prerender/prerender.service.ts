@@ -414,7 +414,18 @@ export class PrerenderService {
   // Автоматический прогрев по расписанию (каждый ttl/2 секунд)
   scheduleAutoWarmup() {
     if (this.autoWarmupInterval) clearInterval(this.autoWarmupInterval);
-    const cacheTtl = this.cacheService['pageCache'].options.stdTTL || 3600;
+
+    // Безопасно получаем TTL
+    let cacheTtl = 3600;
+    if (
+      this.cacheService &&
+      this.cacheService['pageCache'] &&
+      this.cacheService['pageCache'].options &&
+      typeof this.cacheService['pageCache'].options.stdTTL === 'number'
+    ) {
+      cacheTtl = this.cacheService['pageCache'].options.stdTTL;
+    }
+
     // Прогрев каждые ttl/2 секунд (например, если ttl=3600, то каждые 1800)
     const interval = Math.max(60, Math.floor(cacheTtl / 2));
     this.autoWarmupInterval = setInterval(async () => {
