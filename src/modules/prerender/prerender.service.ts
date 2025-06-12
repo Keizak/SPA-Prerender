@@ -127,12 +127,13 @@ export class PrerenderService {
 
       // Навигация с таймаутом
       await page.goto(url, {
-        waitUntil: 'networkidle2',
+        waitUntil: 'networkidle0',
         timeout: performanceConfig.renderTimeout,
       });
 
       // Дополнительное ожидание для полной загрузки
-      await page.waitForTimeout(performanceConfig.pageWaitTime);
+      await new Promise(r => setTimeout(r, performanceConfig.pageWaitTime))
+
 
       // Прокрутка для ленивой загрузки
       await this.autoScroll(page);
