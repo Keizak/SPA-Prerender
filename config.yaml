@@ -30,8 +30,8 @@ cache:
   
 performance:
   maxConcurrentRenders: 2
-  renderTimeout: 60000  # 30 секунд
-  pageWaitTime: 5000   # 3 секунды ожидания после загрузки
+  renderTimeout: 30000  # 30 секунд
+  pageWaitTime: 4000   # 3 секунды ожидания после загрузки
   
 logging:
   level: 'info'

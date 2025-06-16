@@ -55,7 +55,7 @@ export class AppConfigService {
     return this.configService.get<PerformanceConfig>('performance', {
       maxConcurrentRenders: 10,
       renderTimeout: 30000,
-      pageWaitTime: 5000
+      pageWaitTime: 4000
     });
   }
 
