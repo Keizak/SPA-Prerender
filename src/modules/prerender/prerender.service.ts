@@ -31,6 +31,7 @@ export class PrerenderService {
   };
 
   private sitemapUrls: string[] = [];
+  private lastSitemapUrl: string | null = null;
   private autoWarmupInterval: NodeJS.Timeout | null = null;
 
   private lastTelegramProgress = 0;
@@ -347,6 +348,7 @@ export class PrerenderService {
       throw new BadRequestException('Прогрев уже запущен');
     }
     this.logger.log(`Загрузка sitemap: ${sitemapUrl}`);
+    this.lastSitemapUrl = sitemapUrl; // сохраняем ссылку на sitemap.xml
     this.warmupStatus = {
       inProgress: true,
       total: 0,
@@ -430,9 +432,9 @@ export class PrerenderService {
     // Прогрев каждые ttl/2 секунд (например, если ttl=3600, то каждые 1800)
     const interval = Math.max(60, Math.floor(cacheTtl / 2));
     this.autoWarmupInterval = setInterval(async () => {
-      if (this.sitemapUrls.length > 0 && !this.warmupStatus.inProgress) {
+      if (this.lastSitemapUrl && !this.warmupStatus.inProgress) {
         this.logger.log('Автоматический прогрев кэша по sitemap...');
-        await this.warmupBySitemap(this.sitemapUrls[0]); // sitemapUrls[0] — ссылка на sitemap.xml
+        await this.warmupBySitemap(this.lastSitemapUrl);
       }
     }, interval * 1000);
   }
