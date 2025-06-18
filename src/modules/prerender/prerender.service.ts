@@ -344,10 +344,12 @@ export class PrerenderService {
 
   // Прогрев кэша по sitemap.xml
   async warmupBySitemap(sitemapUrl: string): Promise<WarmupStatus> {
+    this.logger.log(`[WARMUP] Запрос на прогрев по sitemap: ${sitemapUrl}`);
     if (this.warmupStatus.inProgress) {
+      this.logger.warn('[WARMUP] Прогрев уже запущен, новый запуск невозможен');
       throw new BadRequestException('Прогрев уже запущен');
     }
-    this.logger.log(`Загрузка sitemap: ${sitemapUrl}`);
+    this.logger.log(`[WARMUP] Загрузка sitemap: ${sitemapUrl}`);
     this.lastSitemapUrl = sitemapUrl; // сохраняем ссылку на sitemap.xml
     this.warmupStatus = {
       inProgress: true,
@@ -360,19 +362,21 @@ export class PrerenderService {
     await this.sendTelegram('🚀 <b>Прогрев кэша по sitemap.xml начат</b>');
     try {
       const urls = await this.parseSitemap(sitemapUrl);
+      this.logger.log(`[WARMUP] Найдено ${urls.length} URL в sitemap.xml`);
       this.sitemapUrls = urls;
       this.warmupStatus.total = urls.length;
       this.warmupStatus.queue = [...urls];
-      this.logger.log(`Найдено ${urls.length} URL в sitemap.xml`);
       this.lastTelegramProgress = 0;
       for (const url of urls) {
+        this.logger.log(`[WARMUP] Прогрев страницы: ${url}`);
         try {
           await this.render(url);
+          this.logger.log(`[WARMUP] Успешно: ${url}`);
           this.warmupStatus.done++;
         } catch (e) {
+          this.logger.warn(`[WARMUP] Ошибка прогрева ${url}: ${e.message}`);
           this.warmupStatus.errors++;
           this.warmupStatus.lastError = e.message;
-          this.logger.warn(`Ошибка прогрева ${url}: ${e.message}`);
         }
         this.warmupStatus.queue.shift();
         // Telegram прогресс
@@ -384,12 +388,12 @@ export class PrerenderService {
       }
       this.warmupStatus.inProgress = false;
       this.warmupStatus.finishedAt = Date.now();
-      this.logger.log('Прогрев по sitemap завершён');
+      this.logger.log('[WARMUP] Прогрев по sitemap завершён');
       await this.sendTelegram('✅ <b>Прогрев кэша завершён</b>');
     } catch (e) {
       this.warmupStatus.inProgress = false;
       this.warmupStatus.lastError = e.message;
-      this.logger.error('Ошибка прогрева по sitemap:', e.message);
+      this.logger.error('[WARMUP] Ошибка прогрева по sitemap:', e.message);
       await this.sendTelegram('❌ <b>Ошибка прогрева кэша:</b> ' + e.message);
     }
     return this.warmupStatus;
