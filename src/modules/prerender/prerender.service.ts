@@ -151,6 +151,8 @@ export class PrerenderService {
         });
         // Удаляем img пиксели аналитики
         document.querySelectorAll('img[src*="mc.yandex.ru"],img[src*="google-analytics"],img[src*="facebook.com/tr"]').forEach(el => el.remove());
+        // Удаляем все <script data-prerender-remove>
+        document.querySelectorAll('script[data-prerender-remove]').forEach(el => el.remove());
       });
 
       // Получение HTML
